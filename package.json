@@ -2,7 +2,7 @@
   "name": "battle-royale-multiplayer-game",
   "version": "1.0.0",
   "scripts": {
-    "dev:server": "yarn --cwd start:dev",
+    "dev:server": "yarn --cwd server start:dev",
     "dev:client": "wait-on http://127.0.0.1:8080 && yarn --cwd client dev",
     "dev": "cross-env FORCE_COLOR=1 npm-run-all -l -p dev:*"
   },
