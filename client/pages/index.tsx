@@ -1,8 +1,9 @@
-import type {NextPage} from 'next'
 import React, {Component} from "react";
 
 const CANVAS_WIDTH = 640
-const CANVAS_HEIGHT = 320
+const CANVAS_HEIGHT = 512
+const TILE_WIDTH = 64
+const TILE_HEIGHT = 64
 
 type Player = {
   //position values
@@ -24,6 +25,7 @@ type Player = {
 
 type Game = {
   players: Player[],
+  layers: any,
   load: Function,
   init: Function,
   update: Function,
@@ -48,13 +50,25 @@ const Player: Player = {
 const Game: Game = {
   // @ts-ignore
   users: [],
+  layers: [
+    [
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ]
+  ],
   load: async () => {
   },
-  init: async () => {
+  init: () => {
   },
-  update: async () => {
+  update: () => {
   },
-  draw: async () => {
+  draw: () => {
   },
 }
 
