@@ -1,38 +1,15 @@
 import React, {Component} from "react";
 
+//Constants
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 512
 const TILE_WIDTH = 64
 const TILE_HEIGHT = 64
 
-type Player = {
-  //position values
-  x: number,
-  y: number,
-  dirX: number,
-  dirY: number,
+//Utils
 
-  //in-game mechanics
-  health: number,
-  coins: number,
-  bullets: number,
-  medkits: number,
-
-  //update and draw to screen
-  update: Function,
-  draw: Function
-}
-
-type Game = {
-  players: Player[],
-  layers: any,
-  load: Function,
-  init: Function,
-  update: Function,
-  draw: Function
-}
-
-const Player: Player = {
+//Game Mechanics
+const Player = {
   x: 0,
   y: 0,
   dirX: 0,
@@ -47,9 +24,9 @@ const Player: Player = {
   }
 }
 
-const Game: Game = {
-  // @ts-ignore
+const Game = {
   users: [],
+  images: {},
   layers: [
     [
       1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -63,6 +40,33 @@ const Game: Game = {
     ]
   ],
   load: async () => {
+
+    let [tile1, tile2] = await Promise.all([
+      this.loadImage('1', '../public/assets/layers/0.png'),
+      this.loadImage('2', '../public/assets/layers/1.png')
+    ])
+
+    // @ts-ignore
+    this.images = {
+      1: tile1,
+      2: tile2
+    }
+  },
+  loadImage: (key, src) => {
+    const img = new Image()
+    const d = new Promise((_resolve, reject) => {
+      img.onload = function () {
+        // @ts-ignore
+        this.images[key] = img
+      }.bind(this)
+
+      img.onerror = function () {
+        reject(`Could not load image: ${src}`)
+      }
+    })
+
+    img.src = src
+    return d
   },
   init: () => {
   },
@@ -72,24 +76,18 @@ const Game: Game = {
   },
 }
 
-type GamePageProps = {}
-
-type GamePageState = {
-  CURRENT_STEP: number
-}
-
-class GamePage extends Component<GamePageProps, GamePageState> {
-  constructor(props: GamePageProps) {
+class GamePage extends Component {
+  constructor(props) {
     super(props);
 
-    this.canvasRef = React.createRef<HTMLCanvasElement>()
+    this.canvasRef = React.createRef()
 
     this.state = {
       CURRENT_STEP: 0
     }
   }
 
-  private readonly canvasRef
+  canvasRef
 
   // @ts-ignore
   getCtx = () => this.canvasRef.current.getContext('2d')
